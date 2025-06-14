@@ -1,0 +1,146 @@
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: var(--bg);
+  color: var(--text);
+  transition: background 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+:root {
+  --bg: #0a0a23;
+  --text: #fff;
+}
+
+body.dark {
+  --bg: #fff;
+  --text: #111;
+  background: #f9f9f9;
+}
+
+.container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  max-width: 1200px;
+  margin: auto;
+}
+
+.logo img {
+  width: 50px;
+  height: 50px;
+}
+
+h1 {
+  display: flex;
+  justify-content: center;
+  text-align: center;
+}
+
+.navLinks {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+}
+
+.navLinks a {
+  color: var(--text);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.logoutBtn {
+  background: #e74c3c;
+  color: #fff;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.logoutBtn:hover {
+  background: #c0392b;
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.toggle {
+  background: transparent;
+  border: none;
+  font-size: 1.3rem;
+  cursor: pointer;
+}
+
+/* Hamburger Styles */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  width: 25px;
+  height: 20px;
+  cursor: pointer;
+  gap: 5px;
+  transition: all 0.3s ease;
+}
+
+.hamburger div {
+  background: var(--text);
+  height: 3px;
+  width: 100%;
+  transition: transform 0.3s ease;
+}
+
+.hamburger.open div:nth-child(1) {
+  transform: rotate(45deg) translate(5px, 5px);
+}
+
+.hamburger.open div:nth-child(2) {
+  opacity: 0;
+}
+
+.hamburger.open div:nth-child(3) {
+  transform: rotate(-45deg) translate(5px, -5px);
+}
+
+@media (max-width: 768px) {
+  .hamburger {
+    display: flex;
+  }
+
+  .navLinks {
+    position: absolute;
+    top: 64px;
+    right: 0;
+    background: var(--bg);
+    flex-direction: column;
+    padding: 1rem;
+    gap: 1rem;
+    width: 200px;
+    display: none;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  }
+
+  .navLinks.show {
+    display: flex;
+    animation: slideDown 0.3s ease;
+  }
+
+  @keyframes slideDown {
+    from {
+      transform: translateY(-10px);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+}

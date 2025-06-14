@@ -1,0 +1,92 @@
+[
+  {
+    "id": 1,
+    "title": "Understanding Room Acoustics",
+    "summary": "Explore how room acoustics affect sound quality.",
+    "content": "Room acoustics play a critical role in sound engineering. Learn about absorption, diffusion, and reflection for better sound control.",
+    "image": "https://images.pexels.com/photos/1649389/pexels-photo-1649389.jpeg",
+    "video": "",
+    "published": true
+  },
+  {
+    "id": 2,
+    "title": "Microphone Types and Uses",
+    "summary": "Dynamic vs Condenser mics explained.",
+    "content": "Microphones are essential tools. Learn about different types and their applications in studio and live environments.",
+    "image": "https://images.pexels.com/photos/617278/pexels-photo-617278.jpeg",
+    "video": "",
+    "published": true
+  },
+  {
+    "id": 3,
+    "title": "Signal Flow Basics",
+    "summary": "Understanding audio signal routing.",
+    "content": "Signal flow is the path an audio signal takes from source to output. Mastering this is key for troubleshooting and setup.",
+    "image": "https://images.pexels.com/photos/63703/pexels-photo-63703.jpeg",
+    "video": "",
+    "published": true
+  },
+  {
+    "id": 4,
+    "title": "Equalization Techniques",
+    "summary": "Tips for shaping your mix with EQ.",
+    "content": "EQ allows you to enhance or reduce frequencies in a mix. Learn how to apply EQ to vocals, drums, and more.",
+    "image": "https://images.pexels.com/photos/1649388/pexels-photo-1649388.jpeg",
+    "video": "",
+    "published": true
+  },
+  {
+    "id": 5,
+    "title": "Mastering Audio Tracks",
+    "summary": "Final steps in audio production.",
+    "content": "Mastering gives your mix the final polish. Learn about compression, limiting, and stereo enhancement.",
+    "image": "https://images.pexels.com/photos/3758931/pexels-photo-3758931.jpeg",
+    "video": "",
+    "published": true
+  },
+  {
+    "id": 6,
+    "title": "Live Sound Mixing Tips",
+    "summary": "Techniques for mixing on stage.",
+    "content": "Live sound mixing involves managing inputs, feedback control, and audience experience. Discover useful tips and tricks.",
+    "image": "https://images.pexels.com/photos/267948/pexels-photo-267948.jpeg",
+    "video": "",
+    "published": true
+  },
+  {
+    "id": 7,
+    "title": "Digital Audio Workstations (DAWs)",
+    "summary": "Top DAWs and features compared.",
+    "content": "Explore popular DAWs like Pro Tools, Logic Pro, and Ableton Live, and find which suits your workflow.",
+    "image": "https://images.pexels.com/photos/1647163/pexels-photo-1647163.jpeg",
+    "video": "",
+    "published": true
+  },
+  {
+    "id": 8,
+    "title": "Reverb and Delay Effects",
+    "summary": "Add space and depth to your mix.",
+    "content": "Reverb and delay can create ambiance in your mix. Learn how to control timing, feedback, and wet/dry settings.",
+    "image": "https://images.pexels.com/photos/813872/pexels-photo-813872.jpeg",
+    "video": "",
+    "published": true
+  },
+  {
+    "id": 9,
+    "title": "Audio Interfaces Explained",
+    "summary": "Choosing the right interface.",
+    "content": "Understand inputs, outputs, latency, and sample rate so you can pick the best interface for your needs.",
+    "image": "https://images.pexels.com/photos/1647167/pexels-photo-1647167.jpeg",
+    "video": "",
+    "published": true
+  },
+  {
+    "id": 10,
+    "title": "Mix Bus Processing",
+    "summary": "Glue your mix together.",
+    "content": "Apply subtle compression, EQ, and saturation on the mix bus to unify your tracks and enhance loudness.",
+    "image": "https://images.pexels.com/photos/777219/pexels-photo-777219.jpeg",
+    "video": "",
+    "published": true
+  }
+]

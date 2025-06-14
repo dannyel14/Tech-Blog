@@ -1,0 +1,166 @@
+.dashboard {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: auto;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f9f9f9;
+}
+
+h2 {
+  text-align: center;
+  font-size: 2rem;
+  margin-bottom: 2rem;
+  color: #333;
+}
+
+.form {
+  background: #fff;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 2rem;
+  display: grid;
+  gap: 1rem;
+}
+
+.form input,
+.form textarea {
+  padding: 0.8rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.form button {
+  padding: 0.9rem;
+  font-size: 1rem;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.form button:hover {
+  background-color: #0056b3;
+}
+
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+}
+
+.controls button,
+.importLabel {
+  padding: 0.6rem 1rem;
+  font-size: 0.95rem;
+  border: none;
+  border-radius: 6px;
+  background-color: #e0e0e0;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.controls button:hover,
+.importLabel:hover {
+  background-color: #ccc;
+}
+
+.active {
+  background-color: #007bff;
+  color: white;
+}
+
+.importLabel input {
+  display: none;
+}
+
+.posts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+}
+
+.postCard {
+  background: white;
+  border-radius: 10px;
+  padding: 1.5rem;
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.postCard:hover {
+  transform: translateY(-4px);
+}
+
+.image {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.postCard h3 {
+  font-size: 1.3rem;
+  margin: 0.5rem 0 0.2rem;
+  color: #222;
+}
+
+.postCard p {
+  font-size: 0.95rem;
+  color: #555;
+  flex-grow: 1;
+}
+
+.postCard a {
+  font-size: 0.9rem;
+  color: #007bff;
+  text-decoration: none;
+  margin-top: auto;
+}
+
+.buttons {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.buttons button {
+  padding: 0.6rem;
+  font-size: 0.9rem;
+  border: none;
+  border-radius: 6px;
+  background-color: #ddd;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.buttons button:hover {
+  background-color: #ccc;
+}
+
+.toggleBtn.published {
+  background-color: #28a745;
+  color: white;
+}
+
+.toggleBtn.published:hover {
+  background-color: #218838;
+}
+
+.toggleBtn.unpublished {
+  background-color: #dc3545;
+  color: white;
+}
+
+.toggleBtn.unpublished:hover {
+  background-color: #c82333;
+}

@@ -2,52 +2,53 @@ import React, { useState, useEffect, useRef } from 'react';
 import html2canvas from 'html2canvas';
 
 const VoiceScreenshot = () => {
-  const [listening, setListening] = useState(() => localStorage.getItem('voiceListening') === 'true');
+  const [listening, setListening] = useState(false);
   const [showToast, setShowToast] = useState(false);
   const micRef = useRef(null);
 
   useEffect(() => {
+    if (typeof window === "undefined") return;
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     if (!SpeechRecognition) return;
 
-    micRef.current = new SpeechRecognition();
-    micRef.current.continuous = true;
-    micRef.current.interimResults = false;
-    micRef.current.lang = 'en-US';
+    const mic = new SpeechRecognition();
+    mic.continuous = true;
+    mic.interimResults = false;
+    mic.lang = 'en-US';
 
-    micRef.current.onstart = () => setListening(true);
-    micRef.current.onend = () => setListening(false);
+    mic.onstart = () => setListening(true);
+    mic.onend = () => {
+      setListening(false);
+      // auto-restart if user still wants listening
+      if (micRef.current && micRef.current.shouldListen) {
+        mic.start();
+      }
+    };
 
-    micRef.current.onresult = (e) => {
+    mic.onresult = (e) => {
       const transcript = e.results[e.resultIndex][0].transcript.toLowerCase();
       if (transcript.includes('screenshot')) takeScreenshot();
     };
+
+    micRef.current = mic;
   }, []);
-
-  useEffect(() => {
-    localStorage.setItem('voiceListening', listening.toString());
-
-    if (listening && micRef.current) {
-      micRef.current.start();
-    } else {
-      micRef.current?.stop();
-    }
-
-    return () => micRef.current?.stop();
-  }, [listening]);
 
   const toggleListening = () => {
     if (!micRef.current) return;
-    setListening((prev) => !prev);
+    if (listening) {
+      micRef.current.shouldListen = false;
+      micRef.current.stop();
+    } else {
+      micRef.current.shouldListen = true;
+      micRef.current.start();
+    }
   };
 
   const takeScreenshot = () => {
     const target = document.getElementById('root') || document.documentElement;
-
     html2canvas(target, {
-      scrollY: -window.scrollY,  // Ensure full view capture
-      scale: 2,                  // High resolution
-      useCORS: true              // Avoid cross-origin image issues
+      scale: 2,
+      useCORS: true,
     }).then(canvas => {
       const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
       const filename = `screenshot_${timestamp}.png`;
@@ -79,8 +80,6 @@ const VoiceScreenshot = () => {
             boxShadow: '0 2px 6px rgba(0,0,0,0.15)',
             transition: 'transform 0.2s ease',
           }}
-          onMouseEnter={e => { e.currentTarget.style.transform = 'scale(1.05)'; }}
-          onMouseLeave={e => { e.currentTarget.style.transform = 'scale(1)'; }}
         >
           {listening ? '🎤 Listening' : '🎙️ Start Voice'}
         </button>

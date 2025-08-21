@@ -55,7 +55,7 @@ const VoiceScreenshot = () => {
   const target = document.documentElement; // ✅ viewport root
 
   html2canvas(target, {
-    scale: 1, // lower scale = faster
+    scale: 2, // lower scale = faster
     width: window.innerWidth,
     height: window.innerHeight,
     x: window.scrollX,
@@ -91,7 +91,7 @@ const VoiceScreenshot = () => {
 
     // ✅ Toast (shorter delay if you want faster feedback)
     setShowToast(true);
-    setTimeout(() => setShowToast(false), 1200);
+    setTimeout(() => setShowToast(false), 2000);
   });
 };
 

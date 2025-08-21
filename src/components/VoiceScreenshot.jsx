@@ -44,24 +44,52 @@ const VoiceScreenshot = () => {
     }
   };
 
-  const takeScreenshot = () => {
-    const target = document.getElementById('root') || document.documentElement;
-    html2canvas(target, {
-      scale: 2,
-      useCORS: true,
-    }).then(canvas => {
-      const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
-      const filename = `screenshot_${timestamp}.png`;
+const takeScreenshot = () => {
+  const target = document.body;
 
-      const link = document.createElement('a');
-      link.download = filename;
-      link.href = canvas.toDataURL('image/png');
-      link.click();
+  html2canvas(target, {
+    scale: 2,
+    useCORS: true,
+    windowWidth: window.innerWidth,
+    windowHeight: window.innerHeight,
+    x: window.scrollX,
+    y: window.scrollY,
+    scrollX: -window.scrollX,
+    scrollY: -window.scrollY,
+  }).then(canvas => {
+    const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+    const filename = `screenshot_${timestamp}.png`;
 
-      setShowToast(true);
-      setTimeout(() => setShowToast(false), 2000);
-    });
-  };
+    const link = document.createElement('a');
+    link.download = filename;
+    link.href = canvas.toDataURL('image/png');
+    link.click();
+
+    // 🔦 Trigger flash effect
+    const flash = document.createElement("div");
+    flash.style.position = "fixed";
+    flash.style.top = 0;
+    flash.style.left = 0;
+    flash.style.width = "100vw";
+    flash.style.height = "100vh";
+    flash.style.background = "#fff";
+    flash.style.opacity = "0.9";
+    flash.style.zIndex = "9999";
+    flash.style.transition = "opacity 0.4s ease";
+
+    document.body.appendChild(flash);
+
+    setTimeout(() => {
+      flash.style.opacity = "0";
+      setTimeout(() => flash.remove(), 400);
+    }, 100);
+
+    // ✅ Toast message
+    setShowToast(true);
+    setTimeout(() => setShowToast(false), 1000);
+  });
+};
+
 
   return (
     <>

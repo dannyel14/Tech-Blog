@@ -52,50 +52,49 @@ const VoiceScreenshot = () => {
   };
 
   const takeScreenshot = () => {
-    const target = document.body;
+  const target = document.documentElement; // ✅ viewport root
 
-    html2canvas(target, {
-      scale: 2,
-      useCORS: true,
-      width: window.innerWidth, // ✅ viewport width only
-      height: window.innerHeight, // ✅ viewport height only
-      x: window.scrollX,
-      y: window.scrollY,
-    }).then((canvas) => {
-      const timestamp = new Date()
-        .toISOString()
-        .replace(/[:.]/g, "-");
-      const filename = `screenshot_${timestamp}.png`;
+  html2canvas(target, {
+    scale: 1, // lower scale = faster
+    width: window.innerWidth,
+    height: window.innerHeight,
+    x: window.scrollX,
+    y: window.scrollY,
+    logging: false, // disable console logs from html2canvas
+  }).then((canvas) => {
+    const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
+    const filename = `screenshot_${timestamp}.png`;
 
-      const link = document.createElement("a");
-      link.download = filename;
-      link.href = canvas.toDataURL("image/png");
-      link.click();
+    const link = document.createElement("a");
+    link.download = filename;
+    link.href = canvas.toDataURL("image/png");
+    link.click();
 
-      // 🔦 Flash effect
-      const flash = document.createElement("div");
-      flash.style.position = "fixed";
-      flash.style.top = 0;
-      flash.style.left = 0;
-      flash.style.width = "100vw";
-      flash.style.height = "100vh";
-      flash.style.background = "#fff";
-      flash.style.opacity = "0.9";
-      flash.style.zIndex = "9999";
-      flash.style.transition = "opacity 0.4s ease";
+    // 🔦 Flash effect
+    const flash = document.createElement("div");
+    flash.style.position = "fixed";
+    flash.style.top = 0;
+    flash.style.left = 0;
+    flash.style.width = "100vw";
+    flash.style.height = "100vh";
+    flash.style.background = "#fff";
+    flash.style.opacity = "0.9";
+    flash.style.zIndex = "9999";
+    flash.style.transition = "opacity 0.25s ease"; // quicker fade
 
-      document.body.appendChild(flash);
+    document.body.appendChild(flash);
 
-      setTimeout(() => {
-        flash.style.opacity = "0";
-        setTimeout(() => flash.remove(), 400);
-      }, 100);
+    setTimeout(() => {
+      flash.style.opacity = "0";
+      setTimeout(() => flash.remove(), 250);
+    }, 50);
 
-      // ✅ Toast message (2s to match animation)
-      setShowToast(true);
-      setTimeout(() => setShowToast(false), 2000);
-    });
-  };
+    // ✅ Toast (shorter delay if you want faster feedback)
+    setShowToast(true);
+    setTimeout(() => setShowToast(false), 1200);
+  });
+};
+
 
   return (
     <>

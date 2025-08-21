@@ -8,30 +8,37 @@ const VoiceScreenshot = () => {
 
   useEffect(() => {
     if (typeof window === "undefined") return;
-    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    const SpeechRecognition =
+      window.SpeechRecognition || window.webkitSpeechRecognition;
     if (!SpeechRecognition) return;
 
     const mic = new SpeechRecognition();
     mic.continuous = true;
     mic.interimResults = false;
-    mic.lang = 'en-US';
+    mic.lang = "en-US";
 
     mic.onstart = () => setListening(true);
     mic.onend = () => {
       setListening(false);
-      // auto-restart if user still wants listening
-      if (micRef.current && micRef.current.shouldListen) {
-        mic.start();
+      // auto-restart with small delay (prevents error in Chrome)
+      if (micRef.current?.shouldListen && !listening) {
+        setTimeout(() => mic.start(), 300);
       }
     };
 
     mic.onresult = (e) => {
-      const transcript = e.results[e.resultIndex][0].transcript.toLowerCase();
-      if (transcript.includes('screenshot')) takeScreenshot();
+      const transcript =
+        e.results[e.resultIndex][0].transcript.toLowerCase();
+      if (transcript.includes("screenshot")) takeScreenshot();
     };
 
     micRef.current = mic;
-  }, []);
+
+    return () => {
+      mic.stop();
+      micRef.current = null;
+    };
+  }, [listening]);
 
   const toggleListening = () => {
     if (!micRef.current) return;
@@ -44,88 +51,96 @@ const VoiceScreenshot = () => {
     }
   };
 
-const takeScreenshot = () => {
-  const target = document.body;
+  const takeScreenshot = () => {
+    const target = document.body;
 
-  html2canvas(target, {
-    scale: 2,
-    useCORS: true,
-    windowWidth: window.innerWidth,
-    windowHeight: window.innerHeight,
-    x: window.scrollX,
-    y: window.scrollY,
-    scrollX: -window.scrollX,
-    scrollY: -window.scrollY,
-  }).then(canvas => {
-    const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
-    const filename = `screenshot_${timestamp}.png`;
+    html2canvas(target, {
+      scale: 2,
+      useCORS: true,
+      width: window.innerWidth, // ✅ viewport width only
+      height: window.innerHeight, // ✅ viewport height only
+      x: window.scrollX,
+      y: window.scrollY,
+    }).then((canvas) => {
+      const timestamp = new Date()
+        .toISOString()
+        .replace(/[:.]/g, "-");
+      const filename = `screenshot_${timestamp}.png`;
 
-    const link = document.createElement('a');
-    link.download = filename;
-    link.href = canvas.toDataURL('image/png');
-    link.click();
+      const link = document.createElement("a");
+      link.download = filename;
+      link.href = canvas.toDataURL("image/png");
+      link.click();
 
-    // 🔦 Trigger flash effect
-    const flash = document.createElement("div");
-    flash.style.position = "fixed";
-    flash.style.top = 0;
-    flash.style.left = 0;
-    flash.style.width = "100vw";
-    flash.style.height = "100vh";
-    flash.style.background = "#fff";
-    flash.style.opacity = "0.9";
-    flash.style.zIndex = "9999";
-    flash.style.transition = "opacity 0.4s ease";
+      // 🔦 Flash effect
+      const flash = document.createElement("div");
+      flash.style.position = "fixed";
+      flash.style.top = 0;
+      flash.style.left = 0;
+      flash.style.width = "100vw";
+      flash.style.height = "100vh";
+      flash.style.background = "#fff";
+      flash.style.opacity = "0.9";
+      flash.style.zIndex = "9999";
+      flash.style.transition = "opacity 0.4s ease";
 
-    document.body.appendChild(flash);
+      document.body.appendChild(flash);
 
-    setTimeout(() => {
-      flash.style.opacity = "0";
-      setTimeout(() => flash.remove(), 400);
-    }, 100);
+      setTimeout(() => {
+        flash.style.opacity = "0";
+        setTimeout(() => flash.remove(), 400);
+      }, 100);
 
-    // ✅ Toast message
-    setShowToast(true);
-    setTimeout(() => setShowToast(false), 1000);
-  });
-};
-
+      // ✅ Toast message (2s to match animation)
+      setShowToast(true);
+      setTimeout(() => setShowToast(false), 2000);
+    });
+  };
 
   return (
     <>
-      <div style={{ position: 'fixed', bottom: 16, right: 16, zIndex: 1000 }}>
+      <div
+        style={{
+          position: "fixed",
+          bottom: 16,
+          right: 16,
+          zIndex: 1000,
+        }}
+      >
         <button
           onClick={toggleListening}
           style={{
-            padding: '8px 12px',
-            backgroundColor: listening ? '#10b981' : '#ef4444',
-            color: '#fff',
-            border: 'none',
-            borderRadius: '20px',
-            cursor: 'pointer',
+            padding: "8px 12px",
+            backgroundColor: listening ? "#10b981" : "#ef4444",
+            color: "#fff",
+            border: "none",
+            borderRadius: "20px",
+            cursor: "pointer",
             fontWeight: 500,
-            fontSize: '13px',
-            boxShadow: '0 2px 6px rgba(0,0,0,0.15)',
-            transition: 'transform 0.2s ease',
+            fontSize: "13px",
+            boxShadow: "0 2px 6px rgba(0,0,0,0.15)",
+            transition: "transform 0.2s ease",
           }}
         >
-          {listening ? '🎤 Listening' : '🎙️ Start Voice'}
+          {listening ? "🎤 Listening" : "🎙️ Start Voice"}
         </button>
       </div>
 
       {showToast && (
-        <div style={{
-          position: 'fixed',
-          bottom: 70,
-          right: 16,
-          backgroundColor: '#333',
-          color: '#fff',
-          padding: '8px 12px',
-          borderRadius: '6px',
-          zIndex: 1000,
-          fontSize: '0.75rem',
-          animation: 'fadeinout 2s ease'
-        }}>
+        <div
+          style={{
+            position: "fixed",
+            bottom: 70,
+            right: 16,
+            backgroundColor: "#333",
+            color: "#fff",
+            padding: "8px 12px",
+            borderRadius: "6px",
+            zIndex: 1000,
+            fontSize: "0.75rem",
+            animation: "fadeinout 2s ease",
+          }}
+        >
           📸 Screenshot saved!
         </div>
       )}

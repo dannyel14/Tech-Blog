@@ -15,9 +15,14 @@ const initialPosts = [
 ];
 
 const AdminDashboard = () => {
+  // ✅ Safer localStorage parsing
   const [posts, setPosts] = useState(() => {
-    const saved = localStorage.getItem("posts");
-    return saved ? JSON.parse(saved) : initialPosts;
+    try {
+      const saved = localStorage.getItem("posts");
+      return saved ? JSON.parse(saved) : initialPosts;
+    } catch {
+      return initialPosts;
+    }
   });
 
   const [formData, setFormData] = useState({
@@ -70,9 +75,18 @@ const AdminDashboard = () => {
     });
   };
 
-  const handleEdit = (post) => setFormData({ ...post }); // ✅ fixed
+  // ✅ Ensure defaults when editing
+  const handleEdit = (post) =>
+    setFormData({
+      ...post,
+      image: post.image || "",
+      video: post.video || "",
+      summary: post.summary || "",
+    });
+
   const handleDelete = (id) =>
     setPosts((prev) => prev.filter((p) => p.id !== id));
+
   const togglePublish = (id) =>
     setPosts((prev) =>
       prev.map((p) =>
@@ -99,13 +113,14 @@ const AdminDashboard = () => {
     document.body.removeChild(downloadAnchor);
   };
 
+  // ✅ Fixed variable shadowing in FileReader
   const importPosts = (e) => {
     const file = e.target.files[0];
     if (!file) return;
     const reader = new FileReader();
-    reader.onload = (e) => {
+    reader.onload = (ev) => {
       try {
-        const imported = JSON.parse(e.target.result);
+        const imported = JSON.parse(ev.target.result);
         if (Array.isArray(imported)) {
           setPosts(imported);
         } else {
@@ -240,8 +255,9 @@ const MemoizedCore = memo(
           <div key={post.id} className={styles.postCard}>
             <img
               src={
-                post.image ||
-                "https://via.placeholder.com/400x200?text=No+Image"
+                post.image && post.image.trim() !== ""
+                  ? post.image
+                  : "https://via.placeholder.com/400x200?text=No+Image"
               }
               alt={post.title}
               className={styles.image}
